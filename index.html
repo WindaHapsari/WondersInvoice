@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonders Invoice</title>
+    <link rel="icon" href="https://cdn.brandfetch.io/idFXqyz36s/w/256/h/256/theme/dark/icon.png?c=1dxbfHSJFAPEGdCLU4o5B" type="image/png">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Initial Brand Selection Section */
+        .brand-selection-section {
+            text-align: center;
+            background-color: #FOLLOWERSINDOFOLLOWERSINDO;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 40px;
+            width: 100%;
+            max-width: 800px;
+            box-sizing: border-box;
+            border: 1px solid #e0e0e0;
+        }
+        .brand-selection-section h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            font-size: 2.2em;
+        }
+        .brand-selection-section .brand-buttons button {
+            color: white;
+            padding: 15px 35px;
+            margin: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 160px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+        .brand-selection-section .brand-buttons button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .brand-selection-section .btn-FOLLOWERSINDO { background-color: #00aced; width: 300px; } /* Softer blue */
+        .brand-selection-section .btn-RESELLERINDO { background-color: #ffa723; width: 300px; } /* Softer orange */
+        .brand-selection-section .btn-VIRALIZER { background-color: #eb2969; width: 300px; } /* Softer pink */
+
+        /* Form Container Styles */
+        .form-container {
+            max-width: 850px; /* Reduced max-width for smaller side spaces */
+            width: 100%;
+            margin: 0 auto 40px auto;
+            padding: 35px;
+            background-color: #FOLLOWERSINDOFOLLOWERSINDO;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #ddd; /* Solid border, not dashed */
+            display: none; /* Hidden by default until brand is selected */
+            box-sizing: border-box;
+        }
+        .form-container h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 35px;
+            font-size: 2em;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #555;
+            font-size: 0.95em;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="date"],
+        .form-group input[type="number"],
+        .form-group textarea {
+            width: calc(100% - 24px); /* Adjust for padding and border */
+            padding: 12px;
+            border: 1px solid #c0c0c0;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group textarea:focus {
+            border-color: #88b0ea;
+            box-shadow: 0 0 8px rgba(136, 176, 234, 0.3);
+            outline: none;
+        }
+        /* Specific styling for Invoice Number and Date in Form */
+        .form-group.invoice-input input {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            font-weight: 500;
+            color: #333;
+        }
+        .form-group.invoice-input input:focus {
+            border-color: #66afe9;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 8px rgba(102,175,233,0.6);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        .form-row > div {
+            flex: 1;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e0e0e0; /* Solid line for hr */
+            margin: 30px 0;
+        }
+
+        /* Items Table in Form */
+        .item-table {
+            width: 100%;
+            border-collapse: separate; /* Use separate for rounded corners */
+            border-spacing: 0;
+            margin-top: 25px;
+            border-radius: 8px; /* Apply to table */
+            overflow: hidden; /* Ensures rounded corners are visible */
+        }
+        .item-table th, .item-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: left;
+        }
+        .item-table th {
+            background-color: #ADD8E6; /* Default Light Blue for form header */
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+        .item-table tbody tr:nth-child(odd) {
+            background-color: #fcfcfc;
+        }
+        .item-table tbody tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+        .item-table input[type="number"], .item-table input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .item-table .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+        .item-table .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .add-item-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .add-item-btn:hover {
+            background-color: #218838;
+        }
+        .create-invoice-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.3em;
+            cursor: pointer;
+            margin-top: 40px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .create-invoice-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s linear;
+        }
+        .loading-overlay.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Invoice Display Styles */
+        .invoice-display-section {
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            background-color: #FOLLOWERSINDO;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 25mm;
+            box-sizing: border-box;
+            position: relative;
+            margin: 30px auto; /* Centered with auto margins */
+            overflow: hidden;
+            border: 1px solid #ddd; /* Solid border, not dashed */
+            display: none; /* Hidden by default */
+            font-size: 0.95em; /* Slightly smaller base font for readability on A4 */
+        }
+
+        /* Invoice Top and Bottom Borders */
+        .invoice-display-section::before,
+        .invoice-display-section::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 25px; /* Slightly taller border */
+            background-color: #ADD8E6; /* Default Light Blue */
+            z-index: 1;
+        }
+        .invoice-display-section::before {
+            top: 0;
+        }
+        .invoice-display-section::after {
+            bottom: 0;
+        }
+
+        .logo-and-header {
+            text-align: center;
+            margin-bottom: 20px; /* Reduced margin */
+            padding-top: 15px; /* Reduced padding */
+        }
+        .logo-and-header .main-logo {
+            max-width: 90px; /* Slightly smaller logo */
+            height: auto;
+            margin-bottom: 10px; /* Reduced space */
+            /*border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);*/
+        }
+        .logo-and-header h1 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 2.5em; /* Slightly smaller brand name */
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+        .logo-and-header p {
+            margin: 6px 0 0; /* Reduced margin */
+            color: #777;
+            font-size: 1.1em; /* Slightly smaller tagline */
+            font-style: italic;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr; /* Adjust column ratio for better alignment */
+            gap: 20px;
+            margin-bottom: 30px; /* Reduced margin */
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px; /* Reduced padding */
+        }
+        .contact-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .contact-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Align right */
+            justify-content: flex-start;
+        }
+        .contact-left p {
+            margin: 5px 0; /* Reduced margin */
+            color: #555;
+            display: flex;
+            align-items: center;
+            font-size: 0.85em; /* Slightly smaller font */
+        }
+        .contact-left img {
+            width: 20px; /* Slightly smaller icons */
+            height: 20px;
+            margin-right: 8px; /* Reduced margin */
+            vertical-align: middle;
+        }
+        /* Styling for Invoice Number and Date in Display */
+        .contact-right .invoice-number-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px; /* Reduced space */
+        }
+        .contact-right .invoice-number {
+            font-size: 1.3em; /* Smaller for display */
+            color: #007bff;
+            font-weight: 600;
+            background-color: #eaf6ff;
+            padding: 6px 12px; /* Smaller padding */
+            border-radius: 5px; /* Smaller radius */
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); /* Smaller shadow */
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 160px; /* Limit width more for smaller size */
+        }
+        .contact-right .invoice-date {
+            font-size: 0.9em; /* Smaller for display */
+            color: #666;
+            font-style: italic;
+            background-color: #f7f9fb;
+            padding: 4px 10px; /* Smaller padding */
+            border-radius: 3px; /* Smaller radius */
+            border-left: 2px solid #007bff; /* Thinner border */
+            display: inline-block;
+        }
+
+
+        .address-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px; /* Reduced margin */
+        }
+        .address-box {
+            background-color: #fdfdfd;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px; /* Slightly smaller radius */
+            padding-bottom: 15px; /* Reduced padding */
+            width: 48%;
+            box-sizing: border-box;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05); /* Slightly smaller shadow */
+            overflow: hidden;
+        }
+        .address-box .header-box {
+            background-color: #333; /* Black background for header */
+            color: white;
+            text-align: center;
+            padding: 10px 0; /* Reduced padding */
+            margin-bottom: 15px; /* Reduced space */
+            font-size: 1.2em; /* Slightly smaller font */
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .address-box p {
+            margin: 5px 20px; /* Reduced padding and margin */
+            color: #555;
+            line-height: 1.5; /* Reduced line height */
+            font-size: 0.85em; /* Smaller font */
+            text-align: left;
+        }
+        .address-box p strong {
+            color: #333;
+        }
+
+        .items-display-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 30px; /* Reduced margin */
+            border-radius: 8px; /* Slightly smaller radius */
+            overflow: hidden;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); /* Slightly smaller shadow */
+        }
+        .items-display-table th, .items-display-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px; /* Slightly smaller padding */
+            text-align: left;
+        }
+        .items-display-table th {
+            background-color: #ADD8E6; /* Default Light Blue */
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9em; /* Slightly smaller font */
+        }
+        .items-display-table tbody tr:nth-child(odd) {
+            background-color: #fefefe;
+        }
+        .items-display-table tbody tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        .items-display-table .grand-total-cell {
+            text-align: right;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .summary-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            margin-top: 25px; /* Reduced margin */
+            gap: 20px; /* Reduced gap */
+        }
+        .notes-box {
+            display: block;
+            background-color: #fdfdfd;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px; /* Slightly smaller radius */
+            padding: 18px; /* Slightly smaller padding */
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05); /* Slightly smaller shadow */
+            display: flex;
+            flex-direction: column;
+        }
+        .notes-box h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 10px; /* Reduced margin */
+            font-size: 1.1em; /* Slightly smaller font */
+        }
+        .notes-box .notes-content {
+            padding: 8px; /* Slightly smaller padding */
+            background-color: #fbfbfb;
+            border: 1px solid #d0d0d0; /* Solid border */
+            border-radius: 5px; /* Slightly smaller radius */
+            color: #555;
+            line-height: 1.4; /* Reduced line height */
+            font-size: 0.85em; /* Slightly smaller font */
+            flex-grow: 1;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .bottom-section-left { /* New container for Notes and Copyright */
+            width: calc(50% - 10px); /* Matches notes-box width */
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between notes and copyright */
+        }
+
+        .copyright-container { /* New container for copyright text */
+            width: 100%;
+            text-align: left;
+            padding-top: 15px; /* Padding for the top border */
+            border-top: 1px solid #e0e0e0; /* Solid border */
+        }
+        .copyright-text {
+            font-size: 0.8em; /* Smaller font */
+            color: #777;
+            line-height: 1.3; /* Reduced line height */
+        }
+        .copyright-text .question-title {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 4px; /* Reduced margin */
+            font-size: 1em; /* Slightly smaller font */
+            color: #007bff; /* Default color */
+        }
+
+
+        .amount-due-table {
+            width: calc(50% - 10px); /* 50% width minus half of the gap */
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-left: auto;
+            border-radius: 8px; /* Slightly smaller radius */
+            overflow: hidden;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.07); /* Slightly smaller shadow */
+        }
+        .amount-due-table th, .amount-due-table td {
+            border: 1px solid #e0e0e0;
+            padding: 10px; /* Slightly smaller padding */
+            text-align: right;
+        }
+        .amount-due-table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: 200;
+            padding: auto;
+            text-align: center;
+            font-size: 1em; /* Slightly smaller font */
+            letter-spacing: 0.5px;
+        }
+        .amount-due-table tbody tr:last-child td {
+            font-weight: bold;
+            font-size: 1.15em; /* Slightly smaller font */
+            padding: auto;
+            background-color: #e6f7ff;
+            color: #0056b3;
+            border-top: 2px solid #007bff;
+        }
+        .amount-due-table tbody tr:nth-child(odd) {
+            background-color: #fefefe;
+        }
+        .amount-due-table tbody tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        .amount-due-table td:first-child {
+            text-align: left;
+            color: #555;
+        }
+
+
+        .download-buttons {
+            text-align: center;
+            margin-top: 30px; /* Reduced margin */
+            padding-bottom: 20px;
+        }
+        .download-buttons button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px; /* Slightly smaller padding */
+            margin: 0 12px; /* Slightly smaller margin */
+            border: none;
+            border-radius: 6px; /* Slightly smaller radius */
+            font-size: 1.05em; /* Slightly smaller font */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+        }
+        .download-buttons button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* --- Brand Specific Styles for FORM --- */
+        /* FOLLOWERSINDO Brand (Light Blue) */
+        .form-container.brand-FOLLOWERSINDO {
+            border-color: #ADD8E6;
+        }
+        .form-container.brand-FOLLOWERSINDO h1 {
+            color: #007bff;
+        }
+        .form-container.brand-FOLLOWERSINDO .form-group input[type="text"]:focus,
+        .form-container.brand-FOLLOWERSINDO .form-group input[type="email"]:focus,
+        .form-container.brand-FOLLOWERSINDO .form-group input[type="date"]:focus,
+        .form-container.brand-FOLLOWERSINDO .form-group input[type="number"]:focus,
+        .form-container.brand-FOLLOWERSINDO .form-group textarea:focus {
+            border-color: #ADD8E6;
+            box-shadow: 0 0 8px rgba(173, 216, 230, 0.5);
+        }
+        .form-container.brand-FOLLOWERSINDO .form-group.invoice-input input {
+            border-color: #ADD8E6;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 5px rgba(173,216,230,0.4);
+        }
+        .form-container.brand-FOLLOWERSINDO .form-group.invoice-input input:focus {
+            border-color: #66b3ff;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 8px rgba(102,179,255,0.6);
+        }
+        .form-container.brand-FOLLOWERSINDO .item-table th {
+            background-color: #66b3ff; /* Softer blue for header */
+        }
+        .form-container.brand-FOLLOWERSINDO .add-item-btn {
+            background-color: #28a745;
+        }
+        .form-container.brand-FOLLOWERSINDO .create-invoice-btn {
+            background-color: #007bff;
+        }
+
+        /* RESELLERINDO Brand (Orange) */
+        .form-container.brand-RESELLERINDO {
+            border-color: #FFA500;
+        }
+        .form-container.brand-RESELLERINDO h1 {
+            color: #FF8C00;
+        }
+        .form-container.brand-RESELLERINDO .form-group input[type="text"]:focus,
+        .form-container.brand-RESELLERINDO .form-group input[type="email"]:focus,
+        .form-container.brand-RESELLERINDO .form-group input[type="date"]:focus,
+        .form-container.brand-RESELLERINDO .form-group input[type="number"]:focus,
+        .form-container.brand-RESELLERINDO .form-group textarea:focus {
+            border-color: #FFA500;
+            box-shadow: 0 0 8px rgba(255, 165, 0, 0.5);
+        }
+        .form-container.brand-RESELLERINDO .form-group.invoice-input input {
+            border-color: #FFA500;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 5px rgba(255,165,0,0.4);
+        }
+        .form-container.brand-RESELLERINDO .form-group.invoice-input input:focus {
+            border-color: #ff9933;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 8px rgba(255,153,51,0.6);
+        }
+        .form-container.brand-RESELLERINDO .item-table th {
+            background-color: #ff9933; /* Softer orange for header */
+        }
+        .form-container.brand-RESELLERINDO .add-item-btn {
+            background-color: #28a745;
+        }
+        .form-container.brand-RESELLERINDO .create-invoice-btn {
+            background-color: #FF8C00;
+        }
+
+        /* VIRALIZER Brand (Pink) */
+        .form-container.brand-VIRALIZER {
+            border-color: #FFC0CB;
+        }
+        .form-container.brand-VIRALIZER h1 {
+            color: #FF69B4;
+        }
+        .form-container.brand-VIRALIZER .form-group input[type="text"]:focus,
+        .form-container.brand-VIRALIZER .form-group input[type="email"]:focus,
+        .form-container.brand-VIRALIZER .form-group input[type="date"]:focus,
+        .form-container.brand-VIRALIZER .form-group input[type="number"]:focus,
+        .form-container.brand-VIRALIZER .form-group textarea:focus {
+            border-color: #FFC0CB;
+            box-shadow: 0 0 8px rgba(255, 192, 203, 0.5);
+        }
+        .form-container.brand-VIRALIZER .form-group.invoice-input input {
+            border-color: #FFC0CB;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 5px rgba(255,192,203,0.4);
+        }
+        .form-container.brand-VIRALIZER .form-group.invoice-input input:focus {
+            border-color: #ff6699;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 8px rgba(255,102,153,0.6);
+        }
+        .form-container.brand-VIRALIZER .item-table th {
+            background-color: #ff6699; /* Softer pink for header */
+        }
+        .form-container.brand-VIRALIZER .add-item-btn {
+            background-color: #28a745;
+        }
+        .form-container.brand-VIRALIZER .create-invoice-btn {
+            background-color: #FF69B4;
+        }
+
+
+        /* Brand Specific Styles for INVOICE DISPLAY */
+        .invoice-display-section.brand-FOLLOWERSINDO::before,
+        .invoice-display-section.brand-FOLLOWERSINDO::after { background-color: #66b3ff; } /* Softer Blue */
+        .invoice-display-section.brand-FOLLOWERSINDO .logo-and-header h1 { color: #007bff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .logo-and-header p { color: #555; }
+        .invoice-display-section.brand-FOLLOWERSINDO .contact-left p { color: #555; }
+        .invoice-display-section.brand-FOLLOWERSINDO .contact-right .invoice-number { color: #007bff; background-color: #eaf6ff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .contact-right .invoice-date { border-left-color: #66b3ff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .items-display-table th { background-color: #66b3ff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .amount-due-table th { background-color: #007bff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .amount-due-table tr:last-child td { background-color: #e6f7ff; color: #0056b3; }
+        .invoice-display-section.brand-FOLLOWERSINDO .copyright-text .question-title { color: #007bff; }
+
+
+        .invoice-display-section.brand-RESELLERINDO::before,
+        .invoice-display-section.brand-RESELLERINDO::after { background-color: #ff9933; } /* Softer Orange */
+        .invoice-display-section.brand-RESELLERINDO .logo-and-header h1 { color: #FF8C00; }
+        .invoice-display-section.brand-RESELLERINDO .logo-and-header p { color: #666; }
+        .invoice-display-section.brand-RESELLERINDO .contact-left p { color: #666; }
+        .invoice-display-section.brand-RESELLERINDO .contact-right .invoice-number { color: #FF8C00; background-color: #FOLLOWERSINDO2e0; }
+        .invoice-display-section.brand-RESELLERINDO .contact-right .invoice-date { border-left-color: #ff9933; }
+        .invoice-display-section.brand-RESELLERINDO .items-display-table th { background-color: #ff9933; }
+        .invoice-display-section.brand-RESELLERINDO .amount-due-table th { background-color: #FF8C00; }
+        .invoice-display-section.brand-RESELLERINDO .amount-due-table tr:last-child td { background-color: #ffdfb8; color: #cc6600; }
+        .invoice-display-section.brand-RESELLERINDO .copyright-text .question-title { color: #FF8C00; }
+
+
+        .invoice-display-section.brand-VIRALIZER::before,
+        .invoice-display-section.brand-VIRALIZER::after { background-color: #ff6699; } /* Softer Pink */
+        .invoice-display-section.brand-VIRALIZER .logo-and-header h1 { color: #FF69B4; }
+        .invoice-display-section.brand-VIRALIZER .logo-and-header p { color: #777; }
+        .invoice-display-section.brand-VIRALIZER .contact-left p { color: #777; }
+        .invoice-display-section.brand-VIRALIZER .contact-right .invoice-number { color: #FF69B4; background-color: #ffeef2; }
+        .invoice-display-section.brand-VIRALIZER .contact-right .invoice-date { border-left-color: #ff6699; }
+        .invoice-display-section.brand-VIRALIZER .items-display-table th { background-color: #ff6699; }
+        .invoice-display-section.brand-VIRALIZER .amount-due-table th { background-color: #FF69B4; }
+        .invoice-display-section.brand-VIRALIZER .amount-due-table tr:last-child td { background-color: #FFEBF0; color: #e60073; }
+        .invoice-display-section.brand-VIRALIZER .copyright-text .question-title { color: #FF69B4; }
+
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background-color: #FOLLOWERSINDO;
+                margin: 0;
+                padding: 0;
+            }
+            .brand-selection-section,
+            .form-container,
+            .download-buttons { /* Ensure download buttons are hidden when printing */
+                display: none !important;
+            }
+            .invoice-display-section {
+                box-shadow: none;
+                margin: 0;
+                border: none;
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loader"></div>
+    </div>
+
+    <div class="brand-selection-section" id="brandSelectionSection">
+        <h1>Invoice Generator</h1>
+        <div class="brand-buttons">
+            <button class="btn-FOLLOWERSINDO" onclick="selectBrand('FOLLOWERSINDO')">FOLLOWERSINDO</button> <br>
+            <button class="btn-RESELLERINDO" onclick="selectBrand('RESELLERINDO')">RESELLERINDO</button> <br>
+            <button class="btn-VIRALIZER" onclick="selectBrand('VIRALIZER')">VIRALIZER</button>
+        </div>
+    </div>
+
+    <div class="form-container" id="formContainer">
+        <h1 id="formTitle">Form Pengisian Invoice</h1>
+
+        <form id="invoiceForm">
+            <div class="form-row">
+                <div class="form-group invoice-input">
+                    <label for="invoiceNumber">Nomor Invoice:</label>
+                    <input type="text" id="invoiceNumber" name="invoiceNumber" required>
+                </div>
+                <div class="form-group invoice-input">
+                    <label for="invoiceDate">Tanggal Invoice:</label>
+                    <input type="date" id="invoiceDate" name="invoiceDate" required>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="form-row">
+                <div>
+                    <h2>FROM (Perusahaan Anda)</h2>
+                    <div class="form-group">
+                        <label for="yourCompanyName">Nama Perusahaan:</label>
+                        <input type="text" id="yourCompanyName" name="yourCompanyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="yourCompanyField">Bidang Perusahaan:</label>
+                        <input type="text" id="yourCompanyField" name="yourCompanyField" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="yourCompanyAddress">Alamat:</label>
+                        <textarea id="yourCompanyAddress" name="yourCompanyAddress" rows="3" required>Malang, Indonesia</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="yourCompanyPostalCode">Kode Pos:</label>
+                        <input type="text" id="yourCompanyPostalCode" name="yourCompanyPostalCode" value="65319" required>
+                    </div>
+                </div>
+
+                <div>
+                    <h2>TO (Pelanggan)</h2>
+                    <div class="form-group">
+                        <label for="clientCompanyName">Nama:</label>
+                        <input type="text" id="clientCompanyName" name="clientCompanyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCompanyField">Bidang Perusahaan:</label>
+                        <input type="text" id="clientCompanyField" name="clientCompanyField" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCompanyAddress">Alamat:</label>
+                        <textarea id="clientCompanyAddress" name="clientCompanyAddress" rows="3" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="clientCompanyPostalCode">Kode Pos:</label>
+                        <input type="text" id="clientCompanyPostalCode" name="clientCompanyPostalCode" required>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+
+            <h2>ITEMS</h2>
+            <table class="item-table" id="itemsTable">
+                <thead>
+                    <tr>
+                        <th>Quantity</th>
+                        <th>Username</th>
+                        <th>Services</th>
+                        <th>Unit Price</th>
+                        <th>Grand Total</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    </tbody>
+            </table>
+            <button type="button" class="add-item-btn" onclick="addItemRow()">Tambah Item</button>
+
+            <hr>
+
+            <div class="form-row">
+                <div class="form-group" style="width: calc(50% - 12.5px);">
+                    <label for="notes">Notes:</label>
+                    <textarea id="notes" name="notes" rows="4"></textarea>
+                </div>
+                <div style="width: calc(50% - 12.5px);">
+                    <table class="item-table">
+                        <thead>
+                            <tr>
+                                <th colspan="2">AMOUNT DUE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Subtotal</td>
+                                <td id="subtotalDisplay">Rp 0</td>
+                            </tr>
+                            <tr>
+                                <td>Fee Admin</td>
+                                <td>Rp <input type="number" id="adminFeeAmount" value="0" min="0" oninput="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td>Tax</td>
+                                <td>Rp <input type="number" id="taxAmount" value="0" min="0" oninput="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td>Discount</td>
+                                <td>Rp <input type="number" id="discountAmount" value="0" min="0" oninput="calculateTotals()"></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total</strong></td>
+                                <td id="totalDisplay"><strong>Rp 0</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <button type="submit" class="create-invoice-btn">Buat Invoice</button>
+        </form>
+    </div>
+
+    <div class="invoice-display-section" id="invoiceDisplaySection">
+        <div class="logo-and-header">
+            <img id="mainBrandLogo" class="main-logo" src="" alt="Brand Logo">
+            <h1 id="displayBrandName"></h1>
+            <p id="displayBrandTagline"></p>
+        </div>
+
+        <div class="contact-info">
+            <div class="contact-left">
+                <p><img id="displayInstaLogo" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"> <span id="displayInstaAccount">@brand_store</span></p>
+                <p><img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Email"> <span id="displayEmail">brandstore@gmail.com</span></p>
+                <p><img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png" alt="Phone"> <span id="displayPhoneNumber">(0341)-878790</span></p>
+            </div>
+            <div class="contact-right">
+                <div class="invoice-number-container">
+                    <span class="invoice-number">Invoice #<span id="displayInvoiceNumber"></span></span>
+                    <span class="invoice-date">Tanggal: <span id="displayInvoiceDate"></span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="address-section">
+            <div class="address-box">
+                <div class="header-box">FROM</div>
+                <p><strong>Nama Perusahaan:</strong> <span id="fromCompanyName"></span></p>
+                <p><strong>Bidang:</strong> <span id="fromCompanyField"></span></p>
+                <p><strong>Alamat:</strong> <span id="fromCompanyAddress"></span></p>
+                <p><strong>Kode Pos:</strong> <span id="fromCompanyPostalCode"></span></p>
+            </div>
+            <div class="address-box">
+                <div class="header-box">TO</div>
+                <p><strong>Nama:</strong> <span id="toCompanyName"></span></p>
+                <p><strong>Bidang:</strong> <span id="toCompanyField"></span></p>
+                <p><strong>Alamat:</strong> <span id="toCompanyAddress"></span></p>
+                <p><strong>Kode Pos:</strong> <span id="toCompanyPostalCode"></span></p>
+            </div>
+        </div>
+
+        <h2>ITEMS</h2>
+        <table class="items-display-table" id="displayItemsTable">
+            <thead>
+                <tr>
+                    <th>Quantity</th>
+                    <th>Username</th>
+                    <th>Services</th>
+                    <th>Unit Price</th>
+                    <th>Grand Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+
+        <div class="summary-section">
+            <div class="bottom-section-left">
+                <div class="notes-box">
+                    <h3>Notes</h3>
+                    <div id="displayNotes" class="notes-content"></div>
+                </div>
+                <div class="copyright-container">
+                    <div class="copyright-text">
+                        <span class="question-title" id="copyrightQuestion">Questions?</span>
+                        If you have any questions regarding this invoice, please feel free to contact me at your convenience. I will reply as soon as I get your message.
+                    </div>
+                </div>
+            </div>
+            <table class="amount-due-table" id="amountDueTable">
+                <thead>
+                    <tr>
+                        <th colspan="2">AMOUNT DUE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Subtotal</td>
+                        <td id="displaySubtotal">Rp 0</td>
+                    </tr>
+                    <tr>
+                        <td>Fee Admin</td>
+                        <td id="displayAdminFee">Rp 0</td>
+                    </tr>
+                    <tr>
+                        <td>Tax</td>
+                        <td id="displayTax">Rp 0</td>
+                    </tr>
+                    <tr>
+                        <td>Discount</td>
+                        <td id="displayDiscount">Rp 0</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td id="displayTotal"><strong>Rp 0</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+
+        <div class="download-buttons">
+            <button onclick="downloadInvoice('png')">Download as PNG</button>
+            <button onclick="downloadInvoice('pdf')">Download as PDF</button>
+        </div>
+    </div>
+
+    <script>
+        let selectedBrand = '';
+        let itemData = []; // To store item data for calculation and display
+
+        // Brand data centralized for easy management
+        const brandDetails = {
+            'FOLLOWERSINDO': {
+                name: 'FOLLOWERSINDO',
+                tagline: 'Makin Murah, Makin Mudah',
+                color: '#ADD8E6', // Light Blue for borders
+                darkColor: '#007bff', // Darker blue for text/highlights
+                instaAccount: '@Followersindo_official',
+                email: 'followersindocom@gmail.com',
+                phoneNumber: '62 877-5115-992',
+                logo: 'https://cdn.brandfetch.io/idRgTV3x-I/w/100/h/100/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B' // Placeholder, replace with actual URL
+            },
+            'RESELLERINDO': {
+                name: 'RESELLERINDO',
+                tagline: 'Digital Services',
+                color: '#FFA500', // Orange for borders
+                darkColor: '#FF8C00', // Darker orange for text/highlights
+                instaAccount: '@Resellerindo_official',
+                email: 'resellerindo@gmail.com',
+                phoneNumber: '0341-238921',
+                logo: 'https://cdn.brandfetch.io/idoWNHBS7k/w/300/h/300/theme/dark/icon.png?c=1dxbfHSJFAPEGdCLU4o5B' // Placeholder, replace with actual URL
+            },
+            'VIRALIZER': {
+                name: 'VIRALIZER',
+                tagline: 'Digital Services',
+                color: '#FFC0CB', // Pink for borders
+                darkColor: '#FF69B4', // Darker pink for text/highlights
+                instaAccount: '@viralizer',
+                email: 'viralizer@gmail.com',
+                phoneNumber: '0341-234534',
+                logo: 'https://cdn.brandfetch.io/idounjzpdC/w/1804/h/1654/theme/dark/logo.png?c=1dxbfHSJFAPEGdCLU4o5B' // Placeholder, replace with actual URL
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add one initial item row to the form
+            addItemRow();
+            calculateTotals(); // Initial calculation for empty form
+
+            // Set current date to invoiceDate input
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('invoiceDate').value = today;
+        });
+
+        function selectBrand(brand) {
+            selectedBrand = brand;
+            const brandInfo = brandDetails[selectedBrand];
+
+            document.getElementById('brandSelectionSection').style.display = 'none';
+            const formContainer = document.getElementById('formContainer');
+            formContainer.style.display = 'block';
+            document.getElementById('formTitle').textContent = `Form Pengisian Invoice (${brandInfo.name})`;
+
+            // Update 'your company' default fields based on selected brand
+            document.getElementById('yourCompanyName').value = brandInfo.name;
+            document.getElementById('yourCompanyField').value = brandInfo.tagline; 
+
+            // Apply brand class to form container for styling
+            formContainer.classList.remove('brand-FOLLOWERSINDO', 'brand-RESELLERINDO', 'brand-VIRALIZER');
+            formContainer.classList.add(`brand-${selectedBrand}`);
+
+            // Scroll to the form
+            formContainer.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function addItemRow() {
+            const tableBody = document.querySelector('#itemsTable tbody');
+            const newRow = tableBody.insertRow();
+            const rowIndex = itemData.length; // Use current length for logical index
+
+            newRow.innerHTML = `
+                <td><input type="number" name="quantity[]" value="1" min="1" oninput="updateGrandTotal(${rowIndex})"></td>
+                <td><input type="text" name="username[]"></td>
+                <td><input type="text" name="services[]"></td>
+                <td>Rp <input type="number" name="unitPrice[]" value="0" min="0" oninput="updateGrandTotal(${rowIndex})"></td>
+                <td><span class="grand-total">Rp 0</span></td>
+                <td><button type="button" class="delete-btn" onclick="deleteItemRow(this, ${rowIndex})">Hapus</button></td>
+            `;
+            // Initialize itemData for this new row
+            itemData.push({ quantity: 1, username: '', services: '', unitPrice: 0, grandTotal: 0 });
+            updateGrandTotal(rowIndex); // Calculate initial grand total for the new row
+        }
+
+        function deleteItemRow(button, rowIndex) {
+            const row = button.closest('tr');
+            row.remove();
+            itemData.splice(rowIndex, 1); // Remove from itemData array
+
+            // Re-index remaining rows to ensure correct mapping
+            document.querySelectorAll('#itemsTable tbody tr').forEach((r, idx) => {
+                const quantityInput = r.querySelector('input[name="quantity[]"]');
+                const unitPriceInput = r.querySelector('input[name="unitPrice[]"]');
+                const deleteBtn = r.querySelector('.delete-btn');
+
+                if (quantityInput) quantityInput.setAttribute('oninput', `updateGrandTotal(${idx})`);
+                if (unitPriceInput) unitPriceInput.setAttribute('oninput', `updateGrandTotal(${idx})`);
+                if (deleteBtn) deleteBtn.setAttribute('onclick', `deleteItemRow(this, ${idx})`);
+            });
+
+            calculateTotals();
+        }
+
+        function updateGrandTotal(rowIndex) {
+            const row = document.querySelector(`#itemsTable tbody tr:nth-child(${rowIndex + 1})`);
+            if (!row) return; // Row might have been deleted
+
+            const quantityInput = row.querySelector('input[name="quantity[]"]');
+            const unitPriceInput = row.querySelector('input[name="unitPrice[]"]');
+            const grandTotalSpan = row.querySelector('.grand-total');
+
+            const quantity = parseFloat(quantityInput.value) || 0;
+            const unitPrice = parseFloat(unitPriceInput.value) || 0;
+            const grandTotal = quantity * unitPrice;
+
+            grandTotalSpan.textContent = `Rp ${grandTotal.toLocaleString('id-ID')}`;
+
+            // Update itemData for this row
+            if (itemData[rowIndex]) {
+                itemData[rowIndex].quantity = quantity;
+                itemData[rowIndex].username = row.querySelector('input[name="username[]"]').value;
+                itemData[rowIndex].services = row.querySelector('input[name="services[]"]').value;
+                itemData[rowIndex].unitPrice = unitPrice;
+                itemData[rowIndex].grandTotal = grandTotal;
+            }
+            calculateTotals();
+        }
+
+        document.getElementById('invoiceForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            document.getElementById('loadingOverlay').classList.add('visible');
+
+            const formData = {
+                brand: selectedBrand,
+                invoiceNumber: document.getElementById('invoiceNumber').value,
+                invoiceDate: document.getElementById('invoiceDate').value,
+                yourCompany: {
+                    name: document.getElementById('yourCompanyName').value,
+                    field: document.getElementById('yourCompanyField').value,
+                    address: document.getElementById('yourCompanyAddress').value,
+                    postalCode: document.getElementById('yourCompanyPostalCode').value
+                },
+                clientCompany: {
+                    name: document.getElementById('clientCompanyName').value,
+                    field: document.getElementById('clientCompanyField').value,
+                    address: document.getElementById('clientCompanyAddress').value,
+                    postalCode: document.getElementById('clientCompanyPostalCode').value
+                },
+                items: [],
+                notes: document.getElementById('notes').value,
+                adminFeeAmount: parseFloat(document.getElementById('adminFeeAmount').value) || 0,
+                taxAmount: parseFloat(document.getElementById('taxAmount').value) || 0,
+                discountAmount: parseFloat(document.getElementById('discountAmount').value) || 0
+            };
+
+            // Re-collect item data directly from the current form state
+            const itemRows = document.querySelectorAll('#itemsTable tbody tr');
+            itemRows.forEach(row => {
+                const quantity = parseFloat(row.querySelector('input[name="quantity[]"]').value) || 0;
+                const username = row.querySelector('input[name="username[]"]').value;
+                const services = row.querySelector('input[name="services[]"]').value;
+                const unitPrice = parseFloat(row.querySelector('input[name="unitPrice[]"]').value) || 0;
+                const grandTotal = quantity * unitPrice;
+
+                formData.items.push({
+                    quantity: quantity,
+                    username: username,
+                    services: services,
+                    unitPrice: unitPrice,
+                    grandTotal: grandTotal
+                });
+            });
+
+            setTimeout(() => {
+                populateInvoice(formData);
+                document.getElementById('loadingOverlay').classList.remove('visible');
+                document.getElementById('invoiceDisplaySection').style.display = 'block';
+                document.getElementById('invoiceDisplaySection').scrollIntoView({ behavior: 'smooth' });
+            }, 1000);
+        });
+
+        function calculateTotals() {
+            let subtotal = 0;
+            itemData.forEach(item => {
+                subtotal += item.grandTotal;
+            });
+
+            const adminFee = parseFloat(document.getElementById('adminFeeAmount').value) || 0;
+            const tax = parseFloat(document.getElementById('taxAmount').value) || 0;
+            const discount = parseFloat(document.getElementById('discountAmount').value) || 0;
+
+            let total = subtotal + adminFee + tax - discount;
+            if (total < 0) total = 0; // Ensure total doesn't go negative
+
+            document.getElementById('subtotalDisplay').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+            document.getElementById('totalDisplay').textContent = `Rp ${total.toLocaleString('id-ID')}`;
+        }
+
+
+        function populateInvoice(invoiceData) {
+            const brandInfo = brandDetails[invoiceData.brand];
+
+            // Apply brand specific styles to invoice display section
+            const invoiceDisplaySection = document.getElementById('invoiceDisplaySection');
+            const itemsDisplayTable = document.getElementById('displayItemsTable');
+            const amountDueTable = document.getElementById('amountDueTable');
+            const copyrightQuestion = document.getElementById('copyrightQuestion');
+
+
+            // Clear previous brand classes
+            invoiceDisplaySection.classList.remove('brand-FOLLOWERSINDO', 'brand-RESELLERINDO', 'brand-VIRALIZER');
+            itemsDisplayTable.classList.remove('brand-FOLLOWERSINDO', 'brand-RESELLERINDO', 'brand-VIRALIZER');
+            amountDueTable.classList.remove('brand-FOLLOWERSINDO', 'brand-RESELLERINDO', 'brand-VIRALIZER');
+
+            // Add new brand class
+            invoiceDisplaySection.classList.add(`brand-${invoiceData.brand}`);
+            itemsDisplayTable.classList.add(`brand-${invoiceData.brand}`);
+            amountDueTable.classList.add(`brand-${invoiceData.brand}`);
+            
+            // Set copyright question color based on brand
+            copyrightQuestion.style.color = brandInfo.darkColor;
+
+            // Populate Main Logo, Brand Name and Tagline
+            document.getElementById('mainBrandLogo').src = brandInfo.logo;
+            document.getElementById('displayBrandName').textContent = brandInfo.name;
+            document.getElementById('displayBrandTagline').textContent = brandInfo.tagline;
+
+            // Populate Contact Info (Instagram, Email, Phone) - WhatsApp removed
+            document.getElementById('displayInstaAccount').textContent = brandInfo.instaAccount;
+            document.getElementById('displayEmail').textContent = brandInfo.email;
+            document.getElementById('displayPhoneNumber').textContent = brandInfo.phoneNumber;
+
+            // Populate general info
+            document.getElementById('displayInvoiceNumber').textContent = invoiceData.invoiceNumber;
+            document.getElementById('displayInvoiceDate').textContent = new Date(invoiceData.invoiceDate).toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });
+
+            // Populate FROM section
+            document.getElementById('fromCompanyName').textContent = invoiceData.yourCompany.name;
+            document.getElementById('fromCompanyField').textContent = invoiceData.yourCompany.field;
+            document.getElementById('fromCompanyAddress').textContent = invoiceData.yourCompany.address;
+            document.getElementById('fromCompanyPostalCode').textContent = invoiceData.yourCompany.postalCode;
+
+
+            // Populate TO section
+            document.getElementById('toCompanyName').textContent = invoiceData.clientCompany.name;
+            document.getElementById('toCompanyField').textContent = invoiceData.clientCompany.field;
+            document.getElementById('toCompanyAddress').textContent = invoiceData.clientCompany.address;
+            document.getElementById('toCompanyPostalCode').textContent = invoiceData.clientCompany.postalCode;
+
+
+            // Populate ITEMS table
+            const itemsTableBody = document.querySelector('#displayItemsTable tbody');
+            itemsTableBody.innerHTML = ''; // Clear previous items
+            let subtotal = 0;
+            invoiceData.items.forEach(item => {
+                const row = itemsTableBody.insertRow();
+                row.innerHTML = `
+                    <td>${item.quantity}</td>
+                    <td>${item.username}</td>
+                    <td>${item.services}</td>
+                    <td>Rp ${item.unitPrice.toLocaleString('id-ID')}</td>
+                    <td class="grand-total-cell">Rp ${item.grandTotal.toLocaleString('id-ID')}</td>
+                `;
+                subtotal += item.grandTotal;
+            });
+
+            // Populate Notes
+            document.getElementById('displayNotes').textContent = invoiceData.notes || 'Tidak ada catatan.';
+
+
+            // Calculate and populate AMOUNT DUE
+            const adminFee = invoiceData.adminFeeAmount;
+            const tax = invoiceData.taxAmount;
+            const discount = invoiceData.discountAmount;
+
+            let total = subtotal + adminFee + tax - discount;
+            if (total < 0) total = 0;
+
+            document.getElementById('displaySubtotal').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+            document.getElementById('displayAdminFee').textContent = `Rp ${adminFee.toLocaleString('id-ID')}`;
+            document.getElementById('displayTax').textContent = `Rp ${tax.toLocaleString('id-ID')}`;
+            document.getElementById('displayDiscount').textContent = `Rp ${discount.toLocaleString('id-ID')}`;
+            document.getElementById('displayTotal').textContent = `Rp ${total.toLocaleString('id-ID')}`;
+
+            // Ensure notes box height matches amount due table height
+            adjustNotesBoxHeight();
+        }
+
+        // Function to adjust notes box height
+        function adjustNotesBoxHeight() {
+            const amountDueTable = document.getElementById('amountDueTable');
+            const notesBox = document.querySelector('.notes-box');
+            
+            // Set a small delay to ensure the table has rendered before calculating height
+            setTimeout(() => {
+                // Reset minHeight first to get accurate current height of amountDueTable
+                notesBox.style.minHeight = 'auto'; 
+                // Set minimum height based on amountDueTable's offsetHeight
+                notesBox.style.minHeight = `${amountDueTable.offsetHeight}px`; 
+            }, 100); // Small delay
+        }
+
+        // Call adjustNotesBoxHeight when window is resized to maintain layout
+        window.addEventListener('resize', adjustNotesBoxHeight);
+
+
+        async function downloadInvoice(format) {
+        const invoiceElement = document.getElementById('invoiceDisplaySection');
+        const downloadButtons = document.querySelector('.download-buttons'); // Ambil elemen tombol download
+
+        // Sembunyikan tombol download sementara sebelum capture
+        downloadButtons.style.display = 'none';
+
+        // Increase render scale for better quality (higher value = sharper image)
+        const scale = 4;
+
+        const canvas = await html2canvas(invoiceElement, {
+            scale: scale,
+            useCORS: true,
+            logging: false,
+            windowWidth: invoiceElement.scrollWidth,
+            windowHeight: invoiceElement.scrollHeight
+        });
+
+        // Tampilkan kembali tombol download setelah capture selesai
+        downloadButtons.style.display = 'block';
+
+        const { jsPDF } = window.jspdf;
+        const imgData = canvas.toDataURL('image/png');
+
+        // A4 dimensions in mm
+        const pdfWidth = 210;
+        const pdfHeight = 297;
+
+        if (format === 'png') {
+            const link = document.createElement('a');
+            link.href = imgData;
+            link.download = 'invoice.png';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else if (format === 'pdf') {
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const imgProps = doc.getImageProperties(imgData);
+
+            // Hitung rasio untuk memastikan gambar muat dalam satu halaman A4
+            // Kita ingin gambar mengisi lebar penuh halaman PDF
+            const imgWidth = pdfWidth;
+            // Hitung tinggi gambar berdasarkan rasio aslinya
+            const imgHeight = (imgProps.height * imgWidth) / imgProps.width;
+
+            // Jika tinggi gambar melebihi tinggi halaman PDF, sesuaikan skala
+            let finalImgWidth = imgWidth;
+            let finalImgHeight = imgHeight;
+            if (imgHeight > pdfHeight) {
+                const ratio = pdfHeight / imgHeight; // Rasio untuk menyesuaikan tinggi
+                finalImgHeight = pdfHeight;
+                finalImgWidth = imgWidth * ratio; // Sesuaikan lebar agar rasio tetap
+            }
+
+            // Hitung posisi X untuk menengahkan gambar jika lebarnya disesuaikan
+            const marginX = (pdfWidth - finalImgWidth) / 2;
+
+            // Tambahkan gambar ke PDF
+            // Gunakan finalImgWidth dan finalImgHeight untuk memastikan fit page
+            doc.addImage(imgData, 'PNG', marginX, 0, finalImgWidth, finalImgHeight);
+
+            // Hapus loop addPage() yang sebelumnya membuat multi-halaman
+            // heightLeft -= pdfHeight;
+            // while (heightLeft >= 0) { ... }
+            // Karena kita sudah memastikan gambar fit dalam satu halaman
+            
+            doc.save('invoice.pdf');
+        }
+    }
+    </script>
+</body>
+</html>
