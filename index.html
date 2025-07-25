@@ -777,15 +777,7 @@
                     </div>
                     <div class="form-group">
                         <label for="yourCompanyField">Bidang Perusahaan:</label>
-                        <input type="text" id="yourCompanyField" name="yourCompanyField" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="yourCompanyAddress">Alamat:</label>
-                        <textarea id="yourCompanyAddress" name="yourCompanyAddress" rows="3" required>Malang, Indonesia</textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="yourCompanyPostalCode">Kode Pos:</label>
-                        <input type="text" id="yourCompanyPostalCode" name="yourCompanyPostalCode" value="65319" required>
+                        <input type="text" id="yourCompanyField" name="yourCompanyField" value="Digital Services" required>
                     </div>
                 </div>
 
@@ -796,16 +788,8 @@
                         <input type="text" id="clientCompanyName" name="clientCompanyName" required>
                     </div>
                     <div class="form-group">
-                        <label for="clientCompanyField">Bidang Perusahaan:</label>
-                        <input type="text" id="clientCompanyField" name="clientCompanyField" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="clientCompanyAddress">Alamat:</label>
-                        <textarea id="clientCompanyAddress" name="clientCompanyAddress" rows="3" required></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="clientCompanyPostalCode">Kode Pos:</label>
-                        <input type="text" id="clientCompanyPostalCode" name="clientCompanyPostalCode" required>
+                        <label for="clientCompanyField">Email</label>
+                        <input type="email" id="clientCompanyField" name="clientCompanyField">
                     </div>
                 </div>
             </div>
@@ -883,7 +867,7 @@
         <div class="contact-info">
             <div class="contact-left">
                 <p><img id="displayInstaLogo" src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"> <span id="displayInstaAccount">@brand_store</span></p>
-                <p><img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" alt="Email"> <span id="displayEmail">brandstore@gmail.com</span></p>
+                <p><img src="https://cdn.brandfetch.io/id5o3EIREg/w/400/h/400/theme/dark/icon.jpeg?c=1dxbfHSJFAPEGdCLU4o5B" alt="Email"> <span id="displayEmail">brandstore@gmail.com</span></p>
                 <p><img src="https://upload.wikimedia.org/wikipedia/commons/6/6c/Phone_icon.png" alt="Phone"> <span id="displayPhoneNumber">(0341)-878790</span></p>
             </div>
             <div class="contact-right">
@@ -899,15 +883,11 @@
                 <div class="header-box">FROM</div>
                 <p><strong>Nama Perusahaan:</strong> <span id="fromCompanyName"></span></p>
                 <p><strong>Bidang:</strong> <span id="fromCompanyField"></span></p>
-                <p><strong>Alamat:</strong> <span id="fromCompanyAddress"></span></p>
-                <p><strong>Kode Pos:</strong> <span id="fromCompanyPostalCode"></span></p>
             </div>
             <div class="address-box">
                 <div class="header-box">TO</div>
                 <p><strong>Nama:</strong> <span id="toCompanyName"></span></p>
-                <p><strong>Bidang:</strong> <span id="toCompanyField"></span></p>
-                <p><strong>Alamat:</strong> <span id="toCompanyAddress"></span></p>
-                <p><strong>Kode Pos:</strong> <span id="toCompanyPostalCode"></span></p>
+                <p><strong>Email:</strong> <span id="toCompanyField"></span></p>
             </div>
         </div>
 
@@ -1036,7 +1016,8 @@
 
             // Update 'your company' default fields based on selected brand
             document.getElementById('yourCompanyName').value = brandInfo.name;
-            document.getElementById('yourCompanyField').value = brandInfo.tagline; 
+
+            //document.getElementById('yourCompanyField').value = brandInfo.tagline; 
 
             // Apply brand class to form container for styling
             formContainer.classList.remove('brand-FOLLOWERSINDO', 'brand-RESELLERINDO', 'brand-VIRALIZER');
@@ -1055,7 +1036,7 @@
                 <td><input type="number" name="quantity[]" value="1" min="1" oninput="updateGrandTotal(${rowIndex})"></td>
                 <td><input type="text" name="username[]"></td>
                 <td><input type="text" name="services[]"></td>
-                <td>Rp <input type="number" name="unitPrice[]" value="0" min="0" oninput="updateGrandTotal(${rowIndex})"></td>
+                <td>Rp <input type="text" name="unitPrice[]" value="0" min="0" oninput="updateGrandTotal(${rowIndex})"></td>
                 <td><span class="grand-total">Rp 0</span></td>
                 <td><button type="button" class="delete-btn" onclick="deleteItemRow(this, ${rowIndex})">Hapus</button></td>
             `;
@@ -1092,6 +1073,9 @@
             const grandTotalSpan = row.querySelector('.grand-total');
 
             const quantity = parseFloat(quantityInput.value) || 0;
+
+            // Ambil nilai, ganti koma dengan titik, lalu ubah jadi float
+            const unitPriceValue = unitPriceInput.value.replace(',', '.');
             const unitPrice = parseFloat(unitPriceInput.value) || 0;
             const grandTotal = quantity * unitPrice;
 
@@ -1120,14 +1104,10 @@
                 yourCompany: {
                     name: document.getElementById('yourCompanyName').value,
                     field: document.getElementById('yourCompanyField').value,
-                    address: document.getElementById('yourCompanyAddress').value,
-                    postalCode: document.getElementById('yourCompanyPostalCode').value
                 },
                 clientCompany: {
                     name: document.getElementById('clientCompanyName').value,
                     field: document.getElementById('clientCompanyField').value,
-                    address: document.getElementById('clientCompanyAddress').value,
-                    postalCode: document.getElementById('clientCompanyPostalCode').value
                 },
                 items: [],
                 notes: document.getElementById('notes').value,
@@ -1168,12 +1148,16 @@
                 subtotal += item.grandTotal;
             });
 
-            const adminFee = parseFloat(document.getElementById('adminFeeAmount').value) || 0;
-            const tax = parseFloat(document.getElementById('taxAmount').value) || 0;
-            const discount = parseFloat(document.getElementById('discountAmount').value) || 0;
+            const adminFeeValue = document.getElementById('adminFeeAmount').value.replace(',', '.');
+            const taxValue = document.getElementById('taxAmount').value.replace(',', '.');
+            const discountValue = document.getElementById('discountAmount').value.replace(',', '.');
+
+            const adminFee = parseFloat(adminFeeValue) || 0;
+            const tax = parseFloat(taxValue) || 0;
+            const discount = parseFloat(discountValue) || 0;
 
             let total = subtotal + adminFee + tax - discount;
-            if (total < 0) total = 0; // Ensure total doesn't go negative
+            if (total < 0) total = 0;
 
             document.getElementById('subtotalDisplay').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
             document.getElementById('totalDisplay').textContent = `Rp ${total.toLocaleString('id-ID')}`;
@@ -1220,15 +1204,15 @@
             // Populate FROM section
             document.getElementById('fromCompanyName').textContent = invoiceData.yourCompany.name;
             document.getElementById('fromCompanyField').textContent = invoiceData.yourCompany.field;
-            document.getElementById('fromCompanyAddress').textContent = invoiceData.yourCompany.address;
-            document.getElementById('fromCompanyPostalCode').textContent = invoiceData.yourCompany.postalCode;
+            //document.getElementById('fromCompanyAddress').textContent = invoiceData.yourCompany.address;
+            //document.getElementById('fromCompanyPostalCode').textContent = invoiceData.yourCompany.postalCode;
 
 
             // Populate TO section
             document.getElementById('toCompanyName').textContent = invoiceData.clientCompany.name;
             document.getElementById('toCompanyField').textContent = invoiceData.clientCompany.field;
-            document.getElementById('toCompanyAddress').textContent = invoiceData.clientCompany.address;
-            document.getElementById('toCompanyPostalCode').textContent = invoiceData.clientCompany.postalCode;
+            //document.getElementById('toCompanyAddress').textContent = invoiceData.clientCompany.address;
+            //document.getElementById('toCompanyPostalCode').textContent = invoiceData.clientCompany.postalCode;
 
 
             // Populate ITEMS table
