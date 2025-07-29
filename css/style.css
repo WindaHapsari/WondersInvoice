@@ -1,0 +1,878 @@
+body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f7f6;
+            margin: 0; /* Pastikan margin body 0 */
+            padding: 0; /* Pastikan padding body 0 */
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            /* min-height: 100vh; Ini penting jika body perlu setinggi viewport */
+            overflow-x: hidden; /* Mencegah scroll horizontal jika ada elemen melebihi lebar */
+        }
+
+        /* --- START OF NEW HERO SECTION STYLES (MODIFIED) --- */
+        .hero-section {
+            background-color: #f7f9f9;
+            color: #333;
+            padding: 0; /* Hapus padding vertikal di sini */
+            width: 100%;
+            max-width: none;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            
+            /* PENTING: Gunakan 100vh untuk tinggi minimum yang fit ke viewport */
+            min-height: 100vh; 
+            
+            /* Hapus margin-bottom jika Anda tidak ingin ada space antara hero dan section selanjutnya */
+            margin-bottom: 0; 
+            
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Background pattern (lebih halus) */
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%; /* Pastikan pattern mengisi seluruh tinggi hero */
+            /*background-color: #cfe3fe;*/
+            background: #F0F4F7;
+            background: linear-gradient(90deg, rgba(240, 244, 247, 1) 0%,rgba(181, 210, 238, 1) 100%);
+            background-image: url('data:image/svg+xml,%3Csvg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg"%3E%3Cpath d="M100 0L0 100h100V0z" fill="%23e0e9ec"/%3E%3C/svg%3E');
+            background-repeat: repeat;
+            opacity: 0.2;
+            z-index: 0;
+        }
+
+        /* Website Logo & Name (top center) */
+        .website-header {
+            position: absolute;
+            top: 30px; 
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .website-logo img {
+            max-width: 45px; /* Ukuran logo website sedikit lebih kecil */
+            height: auto;
+        }
+        .website-name {
+            font-size: 1.8em; /* Ukuran teks nama website */
+            font-weight: 700;
+            color: #2c3e50; /* Warna teks gelap */
+            letter-spacing: -0.5px;
+        }
+
+
+        .hero-content-wrapper {
+            display: flex;
+            max-width: 1100px;
+            width: 90%;
+            /* Gunakan flex-grow untuk mengisi sisa ruang vertikal jika diperlukan */
+            /* margin-top: 80px; - Hapus ini, karena kita akan menggunakan justify-content: center */
+            flex-grow: 1; /* Biarkan wrapper ini mengambil ruang sebanyak mungkin */
+            
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+            /* Tambahkan padding vertikal di sini jika ingin konten tidak terlalu mepet ke atas/bawah */
+            padding: 40px 0; 
+        }
+
+
+        .hero-left {
+            flex: 1;
+            text-align: left;
+            padding-right: 20px;
+        }
+
+        .hero-left h1 {
+            font-size: 3.2em;
+            margin-bottom: 15px;
+            font-weight: 700;
+            line-height: 1.2;
+            color: #2c3e50;
+        }
+
+        .hero-left p.tagline-text {
+            font-size: 1.1em;
+            margin-bottom: 20px; /* Jarak antar paragraf tagline */
+            line-height: 1.6;
+            color: #666;
+        }
+
+        .hero-left .brand-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
+            margin-top: 30px;
+            width: 100%; /* Agar tombol bisa flex-item full width */
+        }
+
+        .hero-left .brand-buttons button {
+            color: white;
+            padding: 14px 30px; /* Padding tombol */
+            border: none;
+            border-radius: 8px; /* Sudut sedikit lebih melengkung */
+            font-size: 1.1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 280px; /* Lebar minimum tombol disamakan */
+            max-width: 100%; /* Pastikan tidak melebihi parent */
+            width: fit-content; /* Biarkan konten menentukan lebar, atau atur fixed width */
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            box-sizing: border-box; /* Pastikan padding tidak menambah lebar */
+        }
+
+        /* Menyamakan lebar tombol, bisa pakai lebar tetap atau flexbox */
+        .hero-left .brand-buttons button {
+            width: 100px; /* Contoh lebar tetap untuk semua tombol */
+            /* Atau jika ingin lebih fleksibel tapi tetap sama lebar, bisa menggunakan grid:
+               .hero-left .brand-buttons { display: grid; grid-template-columns: 1fr; gap: 15px; }
+               .hero-left .brand-buttons button { width: auto; }
+            */
+        }
+
+
+        /* Warna tombol spesifik - disesuaikan*/
+        .hero-left .brand-buttons .btn-FOLLOWERSINDO { background-color: #00aced; } /* Biru lembut */
+        .hero-left .brand-buttons .btn-RESELLERINDO { background-color: #ffa723; } /* Orange lembut */
+        .hero-left .brand-buttons .btn-VIRALIZER { background-color: #eb2969; } /* Pink lembut */
+
+        /* Hover colors for buttons (making them slightly darker) */
+        .hero-left .brand-buttons .btn-FOLLOWERSINDO:hover { background-color: #3e98c2; }
+        .hero-left .brand-buttons .btn-RESELLERINDO:hover { background-color: #e67d40; }
+        .hero-left .brand-buttons .btn-VIRALIZER:hover { background-color: #e6608e; }
+
+
+        .hero-right {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-right img {
+            max-width: 120%; /* Responsif */
+            width: 1000px; /* Ukuran gambar ilustrasi diperbesar sedikit */
+            height: auto;
+            display: block;
+            box-shadow: none;
+            border-radius: 12px;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .hero-content-wrapper {
+                flex-direction: column;
+                text-align: center;
+                gap: 40px;
+                /* margin-top: 60px; - Hapus ini di mobile juga */
+                padding: 30px 0; /* Padding vertikal di mobile */
+            }
+            .hero-left {
+                padding-right: 0;
+                text-align: center;
+            }
+            .hero-left .brand-buttons {
+                align-items: center;
+            }
+            .hero-right {
+                margin-top: 20px;
+            }
+            /* ... ukuran font dan button di mobile tetap sama ... */
+        }
+
+        /* --- END OF NEW HERO SECTION STYLES (MODIFIED) --- */
+
+
+        /* Form Container Styles */
+        .form-container {
+            max-width: 850px; /* Reduced max-width for smaller side spaces */
+            width: 100%;
+            margin: 40px auto 40px auto;
+            padding: 35px;
+            background-color: #FOLLOWERSINDOFOLLOWERSINDO;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #ddd; /* Solid border, not dashed */
+            display: none; /* Hidden by default until brand is selected */
+            box-sizing: border-box;
+        }
+        .form-container h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 35px;
+            font-size: 2em;
+        }
+        .form-group {
+            margin-bottom: 18px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #555;
+            font-size: 0.95em;
+        }
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group input[type="date"],
+        .form-group input[type="number"],
+        .form-group textarea {
+            width: calc(100% - 24px); /* Adjust for padding and border */
+            padding: 12px;
+            border: 1px solid #c0c0c0;
+            border-radius: 6px;
+            font-size: 1em;
+            box-sizing: border-box;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .form-group input[type="text"]:focus,
+        .form-group input[type="email"]:focus,
+        .form-group input[type="date"]:focus,
+        .form-group input[type="number"]:focus,
+        .form-group textarea:focus {
+            border-color: #88b0ea;
+            box-shadow: 0 0 8px rgba(136, 176, 234, 0.3);
+            outline: none;
+        }
+        /* Specific styling for Invoice Number and Date in Form */
+        .form-group.invoice-input input {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 2px solid #ddd;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+            font-weight: 500;
+            color: #333;
+        }
+        .form-group.invoice-input input:focus {
+            border-color: #66afe9;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 8px rgba(102,175,233,0.6);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 20px;
+        }
+        .form-row > div {
+            flex: 1;
+        }
+        hr {
+            border: none;
+            border-top: 1px solid #e0e0e0; /* Solid line for hr */
+            margin: 30px 0;
+        }
+
+        /* Items Table in Form */
+        .item-table {
+            width: 100%;
+            border-collapse: separate; /* Use separate for rounded corners */
+            border-spacing: 0;
+            margin-top: 25px;
+            border-radius: 8px; /* Apply to table */
+            overflow: hidden; /* Ensures rounded corners are visible */
+        }
+        .item-table th, .item-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px;
+            text-align: left;
+        }
+        .item-table th {
+            background-color: #ADD8E6; /* Default Light Blue for form header */
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+        .item-table tbody tr:nth-child(odd) {
+            background-color: #fcfcfc;
+        }
+        .item-table tbody tr:nth-child(even) {
+            background-color: #f7f7f7;
+        }
+        .item-table input[type="number"], .item-table input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            border: 1px solid #d0d0d0;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .item-table .delete-btn {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: background-color 0.3s ease;
+        }
+        .item-table .delete-btn:hover {
+            background-color: #c82333;
+        }
+        .add-item-btn {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+        .add-item-btn:hover {
+            background-color: #218838;
+        }
+        .create-invoice-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.3em;
+            cursor: pointer;
+            margin-top: 40px;
+            font-weight: bold;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+        .create-invoice-btn:hover {
+            background-color: #0056b3;
+            transform: translateY(-2px);
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            visibility: hidden;
+            opacity: 0;
+            transition: visibility 0s, opacity 0.5s linear;
+        }
+        .loading-overlay.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+        .loader {
+            border: 8px solid #f3f3f3;
+            border-top: 8px solid #3498db;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Invoice Display Styles */
+        .invoice-display-section {
+            width: 210mm; /* A4 width */
+            min-height: 297mm; /* A4 height */
+            background-color: #FOLLOWERSINDO;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            padding: 25mm;
+            box-sizing: border-box;
+            position: relative;
+            margin: 30px auto; /* Centered with auto margins */
+            overflow: hidden;
+            border: 1px solid #ddd; /* Solid border, not dashed */
+            display: none; /* Hidden by default */
+            font-size: 0.95em; /* Slightly smaller base font for readability on A4 */
+        }
+
+        /* Invoice Top and Bottom Borders */
+        .invoice-display-section::before,
+        .invoice-display-section::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 25px; /* Slightly taller border */
+            background-color: #ADD8E6; /* Default Light Blue */
+            z-index: 1;
+        }
+        .invoice-display-section::before {
+            top: 0;
+        }
+        .invoice-display-section::after {
+            bottom: 0;
+        }
+
+        .logo-and-header {
+            text-align: center;
+            margin-bottom: 20px; /* Reduced margin */
+            padding-top: 15px; /* Reduced padding */
+        }
+        .logo-and-header .main-logo {
+            max-width: 90px; /* Slightly smaller logo */
+            height: auto;
+            margin-bottom: 10px; /* Reduced space */
+            /*border-radius: 50%;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);*/
+        }
+        .logo-and-header h1 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 2.5em; /* Slightly smaller brand name */
+            letter-spacing: 0.8px;
+            font-weight: 700;
+        }
+        .logo-and-header p {
+            margin: 6px 0 0; /* Reduced margin */
+            color: #777;
+            font-size: 1.1em; /* Slightly smaller tagline */
+            font-style: italic;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr; /* Adjust column ratio for better alignment */
+            gap: 20px;
+            margin-bottom: 30px; /* Reduced margin */
+            border-bottom: 1px solid #e0e0e0;
+            padding-bottom: 15px; /* Reduced padding */
+        }
+        .contact-left {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .contact-right {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end; /* Align right */
+            justify-content: flex-start;
+        }
+        .contact-left p {
+            margin: 5px 0; /* Reduced margin */
+            color: #555;
+            display: flex;
+            align-items: center;
+            font-size: 0.85em; /* Slightly smaller font */
+        }
+        .contact-left img {
+            width: 20px; /* Slightly smaller icons */
+            height: 20px;
+            margin-right: 8px; /* Reduced margin */
+            vertical-align: middle;
+        }
+        /* Styling for Invoice Number and Date in Display */
+        .contact-right .invoice-number-container {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px; /* Reduced space */
+        }
+        .contact-right .invoice-number {
+            font-size: 1.3em; /* Smaller for display */
+            color: #007bff;
+            font-weight: 600;
+            background-color: #eaf6ff;
+            padding: 6px 12px; /* Smaller padding */
+            border-radius: 5px; /* Smaller radius */
+            box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05); /* Smaller shadow */
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 160px; /* Limit width more for smaller size */
+        }
+        .contact-right .invoice-date {
+            font-size: 0.9em; /* Smaller for display */
+            color: #666;
+            font-style: italic;
+            background-color: #f7f9fb;
+            padding: 4px 10px; /* Smaller padding */
+            border-radius: 3px; /* Smaller radius */
+            border-left: 2px solid #007bff; /* Thinner border */
+            display: inline-block;
+        }
+
+
+        .address-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px; /* Reduced margin */
+        }
+        .address-box {
+            background-color: #fdfdfd;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px; /* Slightly smaller radius */
+            padding-bottom: 15px; /* Reduced padding */
+            width: 48%;
+            box-sizing: border-box;
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05); /* Slightly smaller shadow */
+            overflow: hidden;
+        }
+        .address-box .header-box {
+            background-color: #333; /* Black background for header */
+            color: white;
+            text-align: center;
+            padding: 10px 0; /* Reduced padding */
+            margin-bottom: 15px; /* Reduced space */
+            font-size: 1.2em; /* Slightly smaller font */
+            font-weight: bold;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .address-box p {
+            margin: 5px 20px; /* Reduced padding and margin */
+            color: #555;
+            line-height: 1.5; /* Reduced line height */
+            font-size: 0.85em; /* Smaller font */
+            text-align: left;
+        }
+        .address-box p strong {
+            color: #333;
+        }
+
+        .items-display-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 30px; /* Reduced margin */
+            border-radius: 8px; /* Slightly smaller radius */
+            overflow: hidden;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05); /* Slightly smaller shadow */
+        }
+        .items-display-table th, .items-display-table td {
+            border: 1px solid #e0e0e0;
+            padding: 12px; /* Slightly smaller padding */
+            text-align: left;
+        }
+        .items-display-table th {
+            background-color: #ADD8E6; /* Default Light Blue */
+            color: white;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 0.9em; /* Slightly smaller font */
+        }
+        .items-display-table tbody tr:nth-child(odd) {
+            background-color: #fefefe;
+        }
+        .items-display-table tbody tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        .items-display-table .grand-total-cell {
+            text-align: right;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .summary-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: stretch;
+            margin-top: 25px; /* Reduced margin */
+            gap: 20px; /* Reduced gap */
+        }
+        .notes-box {
+            display: block;
+            background-color: #fdfdfd;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px; /* Slightly smaller radius */
+            padding: 18px; /* Slightly smaller padding */
+            box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05); /* Slightly smaller shadow */
+            display: flex;
+            flex-direction: column;
+        }
+        .notes-box h3 {
+            color: #2c3e50;
+            margin-top: 0;
+            margin-bottom: 10px; /* Reduced margin */
+            font-size: 1.1em; /* Slightly smaller font */
+        }
+        .notes-box .notes-content {
+            padding: 8px; /* Slightly smaller padding */
+            background-color: #fbfbfb;
+            border: 1px solid #d0d0d0; /* Solid border */
+            border-radius: 5px; /* Slightly smaller radius */
+            color: #555;
+            line-height: 1.4; /* Reduced line height */
+            font-size: 0.85em; /* Slightly smaller font */
+            flex-grow: 1;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .bottom-section-left { /* New container for Notes and Copyright */
+            width: calc(50% - 10px); /* Matches notes-box width */
+            display: flex;
+            flex-direction: column;
+            gap: 20px; /* Space between notes and copyright */
+        }
+
+        .copyright-container { /* New container for copyright text */
+            width: 100%;
+            text-align: left;
+            padding-top: 15px; /* Padding for the top border */
+            border-top: 1px solid #e0e0e0; /* Solid border */
+        }
+        .copyright-text {
+            font-size: 0.8em; /* Smaller font */
+            color: #777;
+            line-height: 1.3; /* Reduced line height */
+        }
+        .copyright-text .question-title {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 4px; /* Reduced margin */
+            font-size: 1em; /* Slightly smaller font */
+            color: #007bff; /* Default color */
+        }
+
+
+        .amount-due-table {
+            width: calc(50% - 10px); /* 50% width minus half of the gap */
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-left: auto;
+            border-radius: 8px; /* Slightly smaller radius */
+            overflow: hidden;
+            box-shadow: 0 1px 8px rgba(0, 0, 0, 0.07); /* Slightly smaller shadow */
+        }
+        .amount-due-table th, .amount-due-table td {
+            border: 1px solid #e0e0e0;
+            padding: 10px; /* Slightly smaller padding */
+            text-align: right;
+        }
+        .amount-due-table th {
+            background-color: #007bff;
+            color: white;
+            font-weight: 200;
+            padding: auto;
+            text-align: center;
+            font-size: 1em; /* Slightly smaller font */
+            letter-spacing: 0.5px;
+        }
+        .amount-due-table tbody tr:last-child td {
+            font-weight: bold;
+            font-size: 1.15em; /* Slightly smaller font */
+            padding: auto;
+            background-color: #e6f7ff;
+            color: #0056b3;
+            border-top: 2px solid #007bff;
+        }
+        .amount-due-table tbody tr:nth-child(odd) {
+            background-color: #fefefe;
+        }
+        .amount-due-table tbody tr:nth-child(even) {
+            background-color: #f8f8f8;
+        }
+        .amount-due-table td:first-child {
+            text-align: left;
+            color: #555;
+        }
+
+
+        .download-buttons {
+            text-align: center;
+            margin-top: 30px; /* Reduced margin */
+            padding-bottom: 20px;
+        }
+        .download-buttons button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px 25px; /* Slightly smaller padding */
+            margin: 0 12px; /* Slightly smaller margin */
+            border: none;
+            border-radius: 6px; /* Slightly smaller radius */
+            font-size: 1.05em; /* Slightly smaller font */
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+        }
+        .download-buttons button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+
+        /* --- Brand Specific Styles for FORM --- */
+        /* FOLLOWERSINDO Brand (Light Blue) */
+        .form-container.brand-FOLLOWERSINDO {
+            border-color: #ADD8E6;
+        }
+        .form-container.brand-FOLLOWERSINDO h1 {
+            color: #007bff;
+        }
+        .form-container.brand-FOLLOWERSINDO .form-group input[type="text"]:focus,
+        .form-container.brand-FOLLOWERSINDO .form-group input[type="email"]:focus,
+        .form-container.brand-FOLLOWERSINDO .form-group input[type="date"]:focus,
+        .form-container.brand-FOLLOWERSINDO .form-group input[type="number"]:focus,
+        .form-container.brand-FOLLOWERSINDO .form-group textarea:focus {
+            border-color: #ADD8E6;
+            box-shadow: 0 0 8px rgba(173, 216, 230, 0.5);
+        }
+        .form-container.brand-FOLLOWERSINDO .form-group.invoice-input input {
+            border-color: #ADD8E6;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 5px rgba(173,216,230,0.4);
+        }
+        .form-container.brand-FOLLOWERSINDO .form-group.invoice-input input:focus {
+            border-color: #66b3ff;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 8px rgba(102,179,255,0.6);
+        }
+        .form-container.brand-FOLLOWERSINDO .item-table th {
+            background-color: #66b3ff; /* Softer blue for header */
+        }
+        .form-container.brand-FOLLOWERSINDO .add-item-btn {
+            background-color: #28a745;
+        }
+        .form-container.brand-FOLLOWERSINDO .create-invoice-btn {
+            background-color: #007bff;
+        }
+
+        /* RESELLERINDO Brand (Orange) */
+        .form-container.brand-RESELLERINDO {
+            border-color: #FFA500;
+        }
+        .form-container.brand-RESELLERINDO h1 {
+            color: #FF8C00;
+        }
+        .form-container.brand-RESELLERINDO .form-group input[type="text"]:focus,
+        .form-container.brand-RESELLERINDO .form-group input[type="email"]:focus,
+        .form-container.brand-RESELLERINDO .form-group input[type="date"]:focus,
+        .form-container.brand-RESELLERINDO .form-group input[type="number"]:focus,
+        .form-container.brand-RESELLERINDO .form-group textarea:focus {
+            border-color: #FFA500;
+            box-shadow: 0 0 8px rgba(255, 165, 0, 0.5);
+        }
+        .form-container.brand-RESELLERINDO .form-group.invoice-input input {
+            border-color: #FFA500;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 5px rgba(255,165,0,0.4);
+        }
+        .form-container.brand-RESELLERINDO .form-group.invoice-input input:focus {
+            border-color: #ff9933;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 8px rgba(255,153,51,0.6);
+        }
+        .form-container.brand-RESELLERINDO .item-table th {
+            background-color: #ff9933; /* Softer orange for header */
+        }
+        .form-container.brand-RESELLERINDO .add-item-btn {
+            background-color: #28a745;
+        }
+        .form-container.brand-RESELLERINDO .create-invoice-btn {
+            background-color: #FF8C00;
+        }
+
+        /* VIRALIZER Brand (Pink) */
+        .form-container.brand-VIRALIZER {
+            border-color: #FFC0CB;
+        }
+        .form-container.brand-VIRALIZER h1 {
+            color: #FF69B4;
+        }
+        .form-container.brand-VIRALIZER .form-group input[type="text"]:focus,
+        .form-container.brand-VIRALIZER .form-group input[type="email"]:focus,
+        .form-container.brand-VIRALIZER .form-group input[type="date"]:focus,
+        .form-container.brand-VIRALIZER .form-group input[type="number"]:focus,
+        .form-container.brand-VIRALIZER .form-group textarea:focus {
+            border-color: #FFC0CB;
+            box-shadow: 0 0 8px rgba(255, 192, 203, 0.5);
+        }
+        .form-container.brand-VIRALIZER .form-group.invoice-input input {
+            border-color: #FFC0CB;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 5px rgba(255,192,203,0.4);
+        }
+        .form-container.brand-VIRALIZER .form-group.invoice-input input:focus {
+            border-color: #ff6699;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.1), 0 0 8px rgba(255,102,153,0.6);
+        }
+        .form-container.brand-VIRALIZER .item-table th {
+            background-color: #ff6699; /* Softer pink for header */
+        }
+        .form-container.brand-VIRALIZER .add-item-btn {
+            background-color: #28a745;
+        }
+        .form-container.brand-VIRALIZER .create-invoice-btn {
+            background-color: #FF69B4;
+        }
+
+
+        /* Brand Specific Styles for INVOICE DISPLAY */
+        .invoice-display-section.brand-FOLLOWERSINDO::before,
+        .invoice-display-section.brand-FOLLOWERSINDO::after { background-color: #66b3ff; } /* Softer Blue */
+        .invoice-display-section.brand-FOLLOWERSINDO .logo-and-header h1 { color: #007bff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .logo-and-header p { color: #555; }
+        .invoice-display-section.brand-FOLLOWERSINDO .contact-left p { color: #555; }
+        .invoice-display-section.brand-FOLLOWERSINDO .contact-right .invoice-number { color: #007bff; background-color: #eaf6ff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .contact-right .invoice-date { border-left-color: #66b3ff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .items-display-table th { background-color: #66b3ff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .amount-due-table th { background-color: #007bff; }
+        .invoice-display-section.brand-FOLLOWERSINDO .amount-due-table tr:last-child td { background-color: #e6f7ff; color: #0056b3; }
+        .invoice-display-section.brand-FOLLOWERSINDO .copyright-text .question-title { color: #007bff; }
+
+
+        .invoice-display-section.brand-RESELLERINDO::before,
+        .invoice-display-section.brand-RESELLERINDO::after { background-color: #ff9933; } /* Softer Orange */
+        .invoice-display-section.brand-RESELLERINDO .logo-and-header h1 { color: #FF8C00; }
+        .invoice-display-section.brand-RESELLERINDO .logo-and-header p { color: #666; }
+        .invoice-display-section.brand-RESELLERINDO .contact-left p { color: #666; }
+        .invoice-display-section.brand-RESELLERINDO .contact-right .invoice-number { color: #FF8C00; background-color: #FOLLOWERSINDO2e0; }
+        .invoice-display-section.brand-RESELLERINDO .contact-right .invoice-date { border-left-color: #ff9933; }
+        .invoice-display-section.brand-RESELLERINDO .items-display-table th { background-color: #ff9933; }
+        .invoice-display-section.brand-RESELLERINDO .amount-due-table th { background-color: #FF8C00; }
+        .invoice-display-section.brand-RESELLERINDO .amount-due-table tr:last-child td { background-color: #ffdfb8; color: #cc6600; }
+        .invoice-display-section.brand-RESELLERINDO .copyright-text .question-title { color: #FF8C00; }
+
+
+        .invoice-display-section.brand-VIRALIZER::before,
+        .invoice-display-section.brand-VIRALIZER::after { background-color: #ff6699; } /* Softer Pink */
+        .invoice-display-section.brand-VIRALIZER .logo-and-header h1 { color: #FF69B4; }
+        .invoice-display-section.brand-VIRALIZER .logo-and-header p { color: #777; }
+        .invoice-display-section.brand-VIRALIZER .contact-left p { color: #777; }
+        .invoice-display-section.brand-VIRALIZER .contact-right .invoice-number { color: #FF69B4; background-color: #ffeef2; }
+        .invoice-display-section.brand-VIRALIZER .contact-right .invoice-date { border-left-color: #ff6699; }
+        .invoice-display-section.brand-VIRALIZER .items-display-table th { background-color: #ff6699; }
+        .invoice-display-section.brand-VIRALIZER .amount-due-table th { background-color: #FF69B4; }
+        .invoice-display-section.brand-VIRALIZER .amount-due-table tr:last-child td { background-color: #FFEBF0; color: #e60073; }
+        .invoice-display-section.brand-VIRALIZER .copyright-text .question-title { color: #FF69B4; }
+
+
+        /* Print Specific Styles */
+        @media print {
+            body {
+                background-color: #FOLLOWERSINDO;
+                margin: 0;
+                padding: 0;
+            }
+            .brand-selection-section,
+            .form-container,
+            .download-buttons { /* Ensure download buttons are hidden when printing */
+                display: none !important;
+            }
+            .invoice-display-section {
+                box-shadow: none;
+                margin: 0;
+                border: none;
+                display: block !important;
+            }
+        }
